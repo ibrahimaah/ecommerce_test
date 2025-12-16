@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,5 +50,25 @@ Route::prefix('products')->name('products.')->group(function () {
         Route::put('{id}', [ProductController::class, 'update'])->name('update');
         Route::delete('{id}', [ProductController::class, 'destroy'])->name('destroy');
     });
+
+});
+
+/*
+|--------------------------------------------------------------------------
+| API Orders Routes
+|--------------------------------------------------------------------------
+|
+| All endpoints are protected (requires authentication)
+|
+*/
+
+Route::prefix('orders')->name('orders.')->middleware('auth:sanctum')->group(function () {
+
+    // User orders
+    Route::get('/', [OrderController::class, 'index'])->name('index');          // List user's orders
+    Route::get('{id}', [OrderController::class, 'show'])->name('show');         // Single order details
+
+    // Create order
+    Route::post('/', [OrderController::class, 'store'])->name('store');
 
 });
